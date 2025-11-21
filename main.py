@@ -10,17 +10,21 @@ from pymobiledevice3.services.dvt.instruments.location_simulation import Locatio
 from pymobiledevice3.usbmux import list_devices
 from pymobiledevice3.lockdown import create_using_usbmux
 from pymobiledevice3.services.amfi import AmfiService
-
-
+from pymobiledevice3.exceptions import DeviceHasPasscodeSetError
+from pymobiledevice3.services.mobile_image_mounter import auto_mount
 def developer_mode_on():
     lockdown = create_using_usbmux(list_devices()[0].serial)
     if not lockdown.paired:
         lockdown.pair()
     if not lockdown.developer_mode_status:
-        AmfiService(lockdown).enable_developer_mode()
-        print("Please enable developer option")
-        print("Privacy & Security -> [scroll down] -> Developer Mode -> On")
-        exit(0)
+        try:
+            AmfiService(lockdown).enable_developer_mode()
+            asyncio.run(auto_mount(lockdown))
+        except DeviceHasPasscodeSetError: 
+            print("[Error] Device has a passcode set")
+            print("Remove the passcode")
+            print("Privacy & Security -> [scroll down] -> Developer Mode -> On")
+            exit(0)
     
     lockdown.close()
 
@@ -50,11 +54,11 @@ async def get_device():
         attempt += 1
     
 def setLocation(latitude, longitude):
+    developer_mode_on()
     device = asyncio.run(get_device())
     if device == None:
         print("[ERROR] NO DEVICES FOUND")
         exit(-1)
-    developer_mode_on()
     if device == None:
         return None
     with DvtSecureSocketProxyService(device) as dvt:
