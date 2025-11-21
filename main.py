@@ -20,8 +20,8 @@ def developer_mode_on():
         print("Privacy & Security -> [scroll down] -> Developer Mode -> On")
     
     lockdown.close()
+
 async def get_device():
-    # start tunnel
     await asyncio.create_subprocess_exec(
         "pymobiledevice3", "remote", "tunneld",
         stdin=subprocess.DEVNULL,
@@ -29,17 +29,28 @@ async def get_device():
         stderr=subprocess.DEVNULL,
         creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
     )
+    attempt = 0
+    while attempt < 10:
+        try:
+            rsds =  await async_get_tunneld_devices()
 
-    await asyncio.sleep(5) # incrate this number if u are on a potato pc
-    rsds =  await async_get_tunneld_devices()
-    if rsds:
-        return rsds[0]
-    else:
-        print("NO DEVICES FOUND")
-        return None
+            if rsds:
+                return rsds[0]
+            else:
+                await asyncio.sleep(2)
+        except OSError as e:
+            if getattr(e, "winerror", None) == 1231:
+                await asyncio.sleep(2)
+            else:
+                return None
 
+        attempt += 1
+    
 def setLocation(latitude, longitude):
     device = asyncio.run(get_device())
+    if device == None:
+        print("[ERROR] NO DEVICES FOUND")
+        exit(-1)
     developer_mode_on()
     if device == None:
         return None
@@ -49,7 +60,6 @@ def setLocation(latitude, longitude):
         print(f"[SUCCESS] Location set to {latitude}, {longitude}")
     
     
-
 if __name__ == "__main__":
     if not (ctypes.windll.shell32.IsUserAnAdmin() != 0):
         print("[ERROR] THIS PROGRAM REQUIRES ADMINISTRATIVE PRIVILEGES!")
