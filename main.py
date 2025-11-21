@@ -56,7 +56,7 @@ if __name__ == "__main__":
     print(figlet_format("ButtAss", font="slant"))
     print("IOS location spoofer, written by pumpkinhead10")
     
-    print("IOS Location Tool – For Educational & Research Use Only")
+    print("ButtAss – For Educational & Research Use Only")
     print("--------------------------------------------------------")
     print("This software is created solely for learning, testing, and")
     print("security research. It must NOT be used to cheat, fake")
@@ -110,3 +110,4 @@ if __name__ == "__main__":
 
 
 # local tunnel(map to usb) -> QUIC over usb -> RSD(only initial time) -> Dvt(servie) -> local tunnel map to usb -> iphone
+
