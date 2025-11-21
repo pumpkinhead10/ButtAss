@@ -14,10 +14,13 @@ from pymobiledevice3.services.amfi import AmfiService
 
 def developer_mode_on():
     lockdown = create_using_usbmux(list_devices()[0].serial)
+    if not lockdown.paired:
+        lockdown.pair()
     if not lockdown.developer_mode_status:
         AmfiService(lockdown).enable_developer_mode()
         print("Please enable developer option")
         print("Privacy & Security -> [scroll down] -> Developer Mode -> On")
+        exit(0)
     
     lockdown.close()
 
