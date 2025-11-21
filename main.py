@@ -11,8 +11,6 @@ from pymobiledevice3.usbmux import list_devices
 from pymobiledevice3.lockdown import create_using_usbmux
 from pymobiledevice3.services.amfi import AmfiService
 
-# SIM -> 1.3295728138309617, 103.77622813639634
-
 
 def developer_mode_on():
     lockdown = create_using_usbmux(list_devices()[0].serial)
@@ -109,5 +107,6 @@ if __name__ == "__main__":
 #       -> send rsdHello to each devices
 #       -> get rsd lists(services and ids)
 #open dvt socket to locatiion service and set
+
 
 # local tunnel(map to usb) -> QUIC over usb -> RSD(only initial time) -> Dvt(servie) -> local tunnel map to usb -> iphone
