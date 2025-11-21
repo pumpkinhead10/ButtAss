@@ -93,7 +93,7 @@ if __name__ == "__main__":
                 latitudeitude = float(input("latitudeitude: "))
                 longitude = float(input("longitude: "))
                 setLocation(latitudeitude, longitude)
-            case "5":
+            case "6":
                 exit(0)
             case _:
                 pass
