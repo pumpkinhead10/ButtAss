@@ -111,9 +111,9 @@ if __name__ == "__main__":
             case "4":
                 setLocation(16.774979791056207, 96.14948163665635)
             case "5":
-                latitudeitude = float(input("latitudeitude: "))
+                latitude = float(input("latitudeitude: "))
                 longitude = float(input("longitude: "))
-                setLocation(latitudeitude, longitude)
+                setLocation(latitude, longitude)
             case "6":
                 exit(0)
             case _:
@@ -131,5 +131,6 @@ if __name__ == "__main__":
 
 
 # local tunnel(map to usb) -> QUIC over usb -> RSD(only initial time) -> Dvt(servie) -> local tunnel map to usb -> iphone
+
 
 
