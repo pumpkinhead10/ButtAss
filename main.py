@@ -15,7 +15,7 @@ from pymobiledevice3.services.amfi import AmfiService
 def developer_mode_on():
     lockdown = create_using_usbmux(list_devices()[0].serial)
     if not lockdown.developer_mode_status:
-        AmfiService(lockdown).enable_developer_mode
+        AmfiService(lockdown).enable_developer_mode()
         print("Please enable developer option")
         print("Privacy & Security -> [scroll down] -> Developer Mode -> On")
     
@@ -29,6 +29,8 @@ async def get_device():
         stderr=subprocess.DEVNULL,
         creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
     )
+
+    await asyncio.sleep(5) # incrate this number if u are on a potato pc
     rsds =  await async_get_tunneld_devices()
     if rsds:
         return rsds[0]
